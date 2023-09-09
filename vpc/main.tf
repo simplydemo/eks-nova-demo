@@ -34,8 +34,8 @@ module "vpc" {
     "10.76.122.0/24", "10.76.123.0/24",
   ]
   eks_subnet_names = [
-    "eksapp-a1", "eksapp-c1",
-    "eksapp-a2", "eksapp-c2",
+    "eksmdapp-a1", "eksmdapp-c1",
+    "eksarapp-a2", "eksarapp-c2",
     "eksproc-a1", "eksproc-c1",
     "eksproc-a2", "eksproc-c2",
   ]

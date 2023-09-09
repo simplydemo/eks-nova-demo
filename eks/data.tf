@@ -1,10 +1,6 @@
+data "aws_caller_identity" "current" {}
+
 data "aws_availability_zones" "available" {}
-
-#data "aws_eks_cluster_auth" "this" {
-#  name = module.eks.cluster_name
-#}
-
-# data "aws_ecr_authorization_token" "ecr" {}
 
 data "aws_vpc" "this" {
   default = false
@@ -26,18 +22,72 @@ data "aws_subnets" "eks" {
   }
 }
 
-# subnet_ids                   = data.aws_subnets.eksapp.ids
 
 
-#eks_subnets = [
-#  "10.76.110.0/24", "10.76.111.0/24",
-#  "10.76.112.0/24", "10.76.113.0/24",
-#  "10.76.120.0/24", "10.76.121.0/24",
-#  "10.76.122.0/24", "10.76.123.0/24",
-#]
-#eks_subnet_names = [
-#  "eksapp-a1", "eksapp-c1",
-#  "eksapp-a2", "eksapp-c2",
-#  "eksproc-a1", "eksproc-c1",
-#  "eksproc-a2", "eksproc-c2",
-#]
+#data "aws_eks_cluster_auth" "this" {
+#  name = module.eks.cluster_name
+#}
+
+# data "aws_ecr_authorization_token" "ecr" {}
+
+# Subnets
+data "aws_subnets" "eksmdapp" {
+  filter {
+    name   = "vpc-id"
+    values = [local.vpc_id]
+  }
+  filter {
+    name   = "tag:Name"
+    values = [format("%s-eksmdapp-*", local.name_prefix)]
+  }
+}
+
+data "aws_subnets" "eksarapp" {
+  filter {
+    name   = "vpc-id"
+    values = [local.vpc_id]
+  }
+  filter {
+    name   = "tag:Name"
+    values = [format("%s-eksarapp-*", local.name_prefix)]
+  }
+}
+
+
+# AMI
+
+data "aws_ami" "amd64" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["amazon-eks-node-1.27-*"]
+  }
+  owners      = ["amazon"]
+}
+
+data "aws_ami" "arm64" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["amazon-eks-arm64-node-1.27-v20230825"]
+  }
+  owners      = ["amazon"]
+}
+
+data "aws_ami" "arm64br" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["bottlerocket-aws-k8s-1.27-aarch64-v1.14.3*"]
+  }
+  owners      = ["630172235254"]
+}
+
+data "aws_ami" "amd64br" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["bottlerocket-aws-k8s-1.27-x86_64-v1.14.3*"]
+  }
+  owners      = ["630172235254"]
+}
