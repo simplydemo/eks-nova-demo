@@ -13,10 +13,19 @@ git clone https://github.com/simplydemo/eks-nova-demo.git
 sh deploy.sh
 ```
 
+## Kubeconfig
+
+```
+aws eks update-kubeconfig --name "nova-an2d-demo-eks"
+```
+
+
 ## Destroy
 ```
 sh destroy.sh
 ```
+
+
 
 ### 클러스터 생성
 
