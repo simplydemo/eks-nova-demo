@@ -25,9 +25,6 @@ module "eks" {
     AmazonEBSCSIDriverPolicy           = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
     AmazonSSMManagedInstanceCore       = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
   }
-
-  depends_on = [
-  ]
 }
 
 # ~ managed nodes
@@ -60,12 +57,12 @@ module "amd64" {
 module "arm64" {
   source                       = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git//modules/node_group?ref=feature/LT101"
   eks_context                  = module.eks.context
-  subnet_ids                   = data.aws_subnets.eksmdapp.ids
+  subnet_ids                   = data.aws_subnets.eksarapp.ids
   name                         = "arm64"
   ami_id                       = data.aws_ami.arm64.image_id
   ami_type                     = "AL2_ARM_64"
   instance_types               = ["t4g.medium"]
-  desired_size                 = 2
+  desired_size                 = 1
   iam_role_additional_policies = {
     AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     CustomPolicy                 = aws_iam_policy.custom.arn
@@ -77,6 +74,21 @@ module "arm64" {
       effect = "NO_SCHEDULE"
     }
   ]
+  depends_on = [module.eks]
+}
+
+module "arm64md" {
+  source                       = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git//modules/node_group?ref=feature/LT101"
+  eks_context                  = module.eks.context
+  subnet_ids                   = data.aws_subnets.eksarapp.ids
+  name                         = "arm64md"
+  ami_type                     = "AL2_ARM_64"
+  instance_types               = ["t4g.medium"]
+  # disk_size                    = 100
+  desired_size                 = 1
+  iam_role_additional_policies = {
+    AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  }
   depends_on = [module.eks]
 }
 
@@ -101,7 +113,6 @@ module "arm64br" {
   depends_on = [module.eks]
 }
 
-
 module "amd64br" {
   source                       = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git//modules/node_group"
   eks_context                  = module.eks.context
@@ -116,4 +127,4 @@ module "amd64br" {
   depends_on = [module.eks]
 }
 
-**/
+*/

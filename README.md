@@ -95,3 +95,6 @@ block_device_mappings = [
 ]
 ```
 
+#### Pre-Defined group
+
+[system:masters](https://github.com/kubernetes/kubernetes/blob/v1.28.0/cmd/kubeadm/app/constants/constants.go#L173)

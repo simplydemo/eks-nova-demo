@@ -2,8 +2,8 @@
 **/.terraform/*
 **/.terraform.lock.hcl
 **/.terraform.tfstate.lock.info
-**/terraform.tfstate
-**/terraform.tfstate.backup
+vpc/terraform.tfstate.bbb
+vpc/terraform.tfstate.backupccc
 
 # Crash log files
 crash.log
