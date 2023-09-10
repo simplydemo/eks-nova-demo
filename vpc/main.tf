@@ -43,8 +43,9 @@ module "vpc" {
     "kubernetes.io/role/internal-elb" = 1
   }
 
-  database_subnets       = ["10.76.91.0/24", "10.76.92.0/24"]
-  database_subnet_names  = ["data-a1", "data-c1"]
-  database_subnet_suffix = "data"
+  database_subnets             = ["10.76.91.0/24", "10.76.92.0/24"]
+  database_subnet_names        = ["data-a1", "data-c1"]
+  database_subnet_suffix       = "data"
+  create_database_subnet_group = false
 }
 
