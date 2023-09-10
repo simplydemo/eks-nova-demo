@@ -1,6 +1,8 @@
 # auth
 
-EKS 클러스터 및 객체를 액세스하는 IAM 사용자 및 Role 을 매핑 합니다.
+EKS 클러스터에 대한 IAM 액세스 주체를 활성화 합니다.
+
+## [Enabling IAM principal access to EKS](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html)
 
 ```hcl
 module "auth" {
@@ -39,6 +41,7 @@ module "auth" {
 }
 ```
 
+
 ### aws_auth_roles
 
 EKS 클러스터를 액세스 할 수 있는 AWS IAM role을 매핑 합니다.
@@ -51,3 +54,10 @@ EKS 클러스터를 액세스 할 수 있는 AWS IAM user을 매핑 합니다.
 
 EKS 클러스터를 액세스 할 수 있는 AWS 계정을 매핑 합니다.   
 
+
+
+## 인증된 IAM 액세스 주체 확인을 위한 ConfigMap 조회
+
+```
+kubectl describe -n kube-system configmap/aws-auth
+```
