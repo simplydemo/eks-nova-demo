@@ -3,20 +3,22 @@ module "ctx" {
 }
 
 locals {
-  project        = module.ctx.project
-  name_prefix    = module.ctx.name_prefix
-  tags           = module.ctx.tags
-  cluster_name   = "demo"
-  vpc_id         = data.aws_vpc.this.id
-  eks_subnet_ids = data.aws_subnets.eks.ids
+  project         = module.ctx.project
+  name_prefix     = module.ctx.name_prefix
+  tags            = module.ctx.tags
+  cluster_name    = module.ctx.cluster_name
+  cluster_version = module.ctx.cluster_version
+  vpc_id          = data.aws_vpc.this.id
+  eks_subnet_ids  = data.aws_subnets.eks.ids
 }
 
 module "eks" {
-  source       = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git"
-  context      = module.ctx.context
-  cluster_name = local.cluster_name
-  vpc_id       = local.vpc_id
-  subnet_ids   = local.eks_subnet_ids
+  source          = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git?ref=feature/LT101"
+  context         = module.ctx.context
+  cluster_name    = local.cluster_name
+  cluster_version = local.cluster_version
+  vpc_id          = local.vpc_id
+  subnet_ids      = local.eks_subnet_ids
 
   cluster_role_additional_policies = {
     AmazonEKS_CNI_Policy               = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
@@ -30,6 +32,7 @@ module "eks" {
 # ~ managed nodes
 module "amd64" {
   source                = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git//modules/node_group?ref=feature/LT101"
+  create                = false
   eks_context           = module.eks.context
   subnet_ids            = data.aws_subnets.eksmdapp.ids
   name                  = "amd64"
@@ -56,6 +59,7 @@ module "amd64" {
 
 module "arm64" {
   source                       = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git//modules/node_group?ref=feature/LT101"
+  create                       = false
   eks_context                  = module.eks.context
   subnet_ids                   = data.aws_subnets.eksarapp.ids
   name                         = "arm64"
@@ -77,20 +81,42 @@ module "arm64" {
   depends_on = [module.eks]
 }
 
+
+module "amd64md" {
+  source                       = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git//modules/node_group?ref=feature/LT101"
+  create                       = true
+  eks_context                  = module.eks.context
+  subnet_ids                   = data.aws_subnets.eksmdapp.ids
+  name                         = "amd64md"
+  ami_type                     = "AL2_x86_64"
+  instance_types               = ["t3a.large"]
+  use_custom_launch_template   = false
+  disk_size                    = 100
+  launch_template_tags         = {}
+  iam_role_additional_policies = {
+    AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    AmazonEBSCSIDriverPolicy     = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  }
+  depends_on = [module.eks]
+}
+
 module "arm64md" {
   source                       = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git//modules/node_group?ref=feature/LT101"
+  create                       = false
   eks_context                  = module.eks.context
   subnet_ids                   = data.aws_subnets.eksarapp.ids
   name                         = "arm64md"
   ami_type                     = "AL2_ARM_64"
   instance_types               = ["t4g.medium"]
-  # disk_size                    = 100
+  use_custom_launch_template   = false
+  disk_size                    = 100
   desired_size                 = 1
   iam_role_additional_policies = {
     AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
   depends_on = [module.eks]
 }
+
 
 /*
 module "arm64br" {

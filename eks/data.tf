@@ -22,14 +22,6 @@ data "aws_subnets" "eks" {
   }
 }
 
-
-
-#data "aws_eks_cluster_auth" "this" {
-#  name = module.eks.cluster_name
-#}
-
-# data "aws_ecr_authorization_token" "ecr" {}
-
 # Subnets
 data "aws_subnets" "eksmdapp" {
   filter {

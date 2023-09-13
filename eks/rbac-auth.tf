@@ -1,20 +1,20 @@
+/*
 module "auth" {
   source = "git::https://github.com/chiwooiac/tfmodule-aws-eks.git//modules/aws-auth?ref=feature/LT101"
+
+  aws_auth_node_roles = compact([
+    module.amd64.node_role_arn,
+    module.arm64.node_role_arn,
+    module.amd64md.node_role_arn,
+    module.arm64md.node_role_arn
+  ])
 
   aws_auth_roles = [
     {
       rolearn  = module.eks.admin_role_arn
       username = "admin"
       groups   = ["system:masters"]
-    },
-    {
-      rolearn  = module.eks.admin_role_arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups   = [
-        "system:bootstrappers",
-        "system:nodes",
-      ]
-    },
+    }
   ]
 
   aws_auth_users = [
@@ -25,5 +25,12 @@ module "auth" {
     },
   ]
 
-  depends_on = [module.eks]
+  depends_on = [
+    module.eks,
+  ]
 }
+
+output "aws_auth_configmap_data" {
+  value = module.auth.aws_auth_configmap_data
+}
+*/

@@ -10,3 +10,8 @@ module "ctx" {
     pri_domain  = "backend.local"
   }
 }
+
+locals {
+  cluster_name    = "demo"
+  cluster_version = "1.27"
+}
