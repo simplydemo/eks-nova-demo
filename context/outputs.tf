@@ -10,6 +10,10 @@ output "name_prefix" {
   value = module.ctx.name_prefix
 }
 
+output "name_prefix_role" {
+  value = local.name_prefix_role
+}
+
 output "project" {
   value = module.ctx.project
 }
