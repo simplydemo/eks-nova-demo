@@ -2,8 +2,7 @@
 **/.terraform/*
 **/.terraform.lock.hcl
 **/.terraform.tfstate.lock.info
-vpc/terraform.tfstate.bbb
-vpc/terraform.tfstate.backupccc
+**/terraform.tfstate
 
 # Crash log files
 crash.log
@@ -29,4 +28,6 @@ terraform.rc
 # Project
 /.idea/
 /target
+/test*
+
 

@@ -1,5 +1,7 @@
 output "context" {
-  value = module.ctx.context
+  value = merge(module.ctx.context, {
+    name_prefix_role = local.name_prefix_role
+  })
 }
 
 output "tags" {

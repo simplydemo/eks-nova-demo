@@ -10,14 +10,6 @@ variable "cluster_version" {
   type    = string
 }
 
-#variable "cluster_oidc_issuer_url" {
-#  type    = string
-#}
-#
-#variable "cluster_oidc_provider_arn" {
-#  type    = string
-#}
-
 variable "kubernetes_version" {
   type    = string
   default = null
@@ -28,22 +20,28 @@ variable "addon_version" {
   default = null
 }
 
-variable "addon_most_recent" {
+variable "most_recent" {
+  type    = bool
+  default = true
+}
+
+variable "preserve" {
   type    = bool
   default = false
 }
 
-variable "addon_preserve" {
-  type    = bool
-  default = false
-}
-
-variable "addon_resolve_conflicts_on_update" {
+variable "resolve_conflicts_on_create" {
   type    = string
   default = "OVERWRITE"
 }
 
-variable "addon_configuration_values" {
+
+variable "resolve_conflicts_on_update" {
+  type    = string
+  default = "OVERWRITE"
+}
+
+variable "configuration_values" {
   type    = string
   default = null
 }

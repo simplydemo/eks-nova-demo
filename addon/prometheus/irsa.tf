@@ -40,7 +40,7 @@ resource "aws_iam_policy" "ingest" {
 }
 
 module "AmpIngest" {
-  source = "../../irsa"
+  source = "../../modules/irsa"
 
   create_kubernetes_namespace       = false
   create_kubernetes_service_account = true
@@ -90,7 +90,7 @@ resource "aws_iam_policy" "query" {
 }
 
 module "AmpQuery" {
-  source = "../../irsa"
+  source = "../../modules/irsa"
 
   count = var.enable_amazon_prometheus ? 1 : 0
 

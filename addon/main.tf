@@ -14,11 +14,11 @@ locals {
   cluster_oidc_issuer_url   = data.aws_eks_cluster.this.identity[0].oidc[0].issuer
   cluster_oidc_provider_arn = data.aws_iam_openid_connect_provider.this.arn # "arn:aws:iam::${local.account_id}:oidc-provider/${local.cluster_oidc_issuer_url}"
 
-  enable_amazon_eks_aws_ebs_csi_driver = true
-  enable_amazon_prometheus             = true
+  enable_amazon_eks_aws_ebs_csi_driver = false
+  enable_amazon_prometheus             = false
 }
 
-module "ebsCsiDriver" {
+module "ebsCsi" {
   source                               = "./aws-ebs-csi-driver"
   count                                = local.enable_amazon_eks_aws_ebs_csi_driver ? 1 : 0
   enable_amazon_eks_aws_ebs_csi_driver = true
@@ -31,6 +31,7 @@ module "ebsCsiDriver" {
   }
 }
 
+/*
 module "prometheusWS" {
   source          = "terraform-aws-modules/managed-service-prometheus/aws"
   version         = "~> 2.1"
@@ -52,4 +53,4 @@ module "prometheus" {
   }
   depends_on = [module.ebsCsiDriver]
 }
-
+*/

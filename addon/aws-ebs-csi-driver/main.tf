@@ -2,12 +2,11 @@ locals {
 
   project            = var.context.project
   name_prefix        = var.context.name_prefix
+  name_prefix_role   = var.context.name_prefix_role
   region_name        = var.context.region
   tags               = var.context.tags
   name               = "aws-ebs-csi-driver"
-  namespace          = var.namespace
   addon_version      = var.addon_version != null ? var.addon_version : (  var.enable_amazon_eks_aws_ebs_csi_driver ? data.aws_eks_addon_version.this.version : replace(data.aws_eks_addon_version.this.version, "/-eksbuild.*/", "")  )
-  service_account    = var.service_account
   kubernetes_version = var.kubernetes_version == null? var.cluster_version : var.kubernetes_version
 
   # IRSA
@@ -21,7 +20,7 @@ data "aws_eks_addon_version" "this" {
   addon_name         = local.name
   # Need to allow both config routes - for managed and self-managed configs
   kubernetes_version = local.kubernetes_version
-  most_recent        = var.addon_most_recent
+  most_recent        = var.most_recent
 }
 
 # AWS Managed Addon
@@ -30,10 +29,11 @@ resource "aws_eks_addon" "addon" {
   cluster_name                = var.cluster_name
   addon_name                  = local.name
   addon_version               = local.addon_version
-  resolve_conflicts_on_update = var.addon_resolve_conflicts_on_update
+  resolve_conflicts_on_create = var.resolve_conflicts_on_create
+  resolve_conflicts_on_update = var.resolve_conflicts_on_update
   service_account_role_arn    = local.create_irsa ? module.irsaAws[0].irsa_iam_role_arn : var.service_account_role_arn
-  preserve                    = var.addon_preserve
-  configuration_values        = var.addon_configuration_values
+  preserve                    = var.preserve
+  configuration_values        = var.configuration_values
   tags                        = local.tags
 }
 
@@ -45,7 +45,7 @@ resource "helm_release" "helm" {
   repository  = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
   chart       = local.name
   version     = "2.12.1"
-  namespace   = local.namespace
+  namespace   = var.namespace
   timeout     = "300"
   values      = [
     <<-EOT
