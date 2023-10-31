@@ -13,6 +13,6 @@ module "ctx" {
 
 locals {
   cluster_name     = "demo"
-  cluster_version  = "1.25" # 1.25 ~ 1.28
+  cluster_version  = "1.28" # 1.25 ~ 1.28
   name_prefix_role = format("%s%s", module.ctx.project, title(local.cluster_name))
 }

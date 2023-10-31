@@ -11,8 +11,8 @@ locals {
 
   # IRSA
   create_irsa               = var.service_account_role_arn == null ? true : false
-  iam_role_name             = try(var.irsa_config.iam_role_name, format("%s%s", local.project, "EBSCSIDriverIRSARole"))
-  iam_policy_name           = try(var.irsa_config.iam_policy_name, format("%s%s", local.project, "EBSCSIDriverIRSAPolicy"))
+  iam_role_name             = try(var.irsa_config.iam_role_name, format("%s%sEbsCSIDriverIRSARole", local.project, title(var.cluster_simple_name)  ))
+  iam_policy_name           = try(var.irsa_config.iam_policy_name, format("%s%sEbsCSIDriverIRSAPolicy", local.project, title(var.cluster_simple_name)  ))
   cluster_oidc_provider_arn = try(var.irsa_config.cluster_oidc_provider_arn, "")
 }
 

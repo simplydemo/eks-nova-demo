@@ -52,7 +52,7 @@ data "aws_ami" "amd64" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["amazon-eks-node-1.27-*"]
+    values = ["amazon-eks-node-1.28-*"]
   }
   owners      = ["amazon"]
 }
@@ -61,7 +61,7 @@ data "aws_ami" "arm64" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["amazon-eks-arm64-node-1.27-v20230825"]
+    values = ["amazon-eks-arm64-node-1.28-*"]
   }
   owners      = ["amazon"]
 }
@@ -70,7 +70,7 @@ data "aws_ami" "arm64br" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["bottlerocket-aws-k8s-1.27-aarch64-v1.14.3*"]
+    values = ["bottlerocket-aws-k8s-1.28-aarch64-*"]
   }
   owners      = ["630172235254"]
 }
@@ -79,7 +79,11 @@ data "aws_ami" "amd64br" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["bottlerocket-aws-k8s-1.27-x86_64-v1.14.3*"]
+    values = ["bottlerocket-aws-k8s-1.28-x86_64-*"]
   }
   owners      = ["630172235254"]
+}
+
+data "aws_iam_openid_connect_provider" "this" {
+  url = local.cluster_oidc_issuer_url
 }
