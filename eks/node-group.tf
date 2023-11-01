@@ -36,20 +36,18 @@ module "amd64" {
 # node-02
 module "arm64" {
   source                       = "../modules/nodegroup/"
-  create                       = false
+  create                       = true
   eks_context                  = module.eks.context
   name                         = "arm64"
   instance_types               = ["t4g.small"]
   ami_id                       = data.aws_ami.arm64.image_id
   ami_type                     = "AL2_ARM_64"
   subnet_ids                   = data.aws_subnets.eksarapp.ids
-  desired_size                 = 1
   iam_role_additional_policies = {
     AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     AmazonEBSCSIDriverPolicy     = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
     CustomPolicy                 = aws_iam_policy.custom.arn
   }
-  # bootstrap_extra_args  = "--cloud-provider=external" # https://github.com/awslabs/amazon-eks-ami/issues/1376
   block_device_mappings = [
     {
       device_name = "/dev/xvda"
