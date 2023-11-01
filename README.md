@@ -59,3 +59,5 @@ sh destroy.sh
 - [examples](./docs/example.md)
 - [handson-docker](./docs/handson/docker-handson.md)
 - [handson-kubectl](./docs/handson/eks-kubectl-handson.md)
+- [handson-github-actions](./docs/handson/github-actions-handson.md)
+- [github-actions-samples](https://github.com/simplydemo/hello-reactjs)
