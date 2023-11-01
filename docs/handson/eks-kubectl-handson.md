@@ -97,3 +97,4 @@ kubectl delete -f nginx-deploy-limit.yaml
 ```
 kubectl scale deployment nginx-deploy-limit --replicas=4
 ```
+
