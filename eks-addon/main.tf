@@ -12,7 +12,7 @@ locals {
 
   # addon
   enable_aws_vpc_cni_driver = true
-  enable_aws_ebs_csi_driver = false
+  enable_aws_ebs_csi_driver = true
 }
 
 module "vpcCni" {

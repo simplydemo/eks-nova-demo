@@ -84,6 +84,3 @@ data "aws_ami" "amd64br" {
   owners      = ["630172235254"]
 }
 
-data "aws_iam_openid_connect_provider" "this" {
-  url = local.cluster_oidc_issuer_url
-}

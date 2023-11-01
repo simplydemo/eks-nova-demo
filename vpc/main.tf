@@ -6,9 +6,9 @@ module "vpc" {
   source               = "git::https://github.com/chiwooiac/tfmodule-aws-vpc.git"
   context              = module.ctx.context
   cidr                 = "10.76.0.0/16"
-  azs                  = [data.aws_availability_zones.this.zone_ids[0], data.aws_availability_zones.this.zone_ids[1]]
+  azs                  = [data.aws_availability_zones.this.zone_ids[0], data.aws_availability_zones.this.zone_ids[2]]
   public_subnets       = ["10.76.11.0/24", "10.76.12.0/24"]
-  public_subnet_names  = ["pub-a1", "pub-b1"]
+  public_subnet_names  = ["pub-c1", "pub-c1"]
   public_subnet_suffix = "pub"
   public_subnet_tags   = {
     "kubernetes.io/role/elb" = 1

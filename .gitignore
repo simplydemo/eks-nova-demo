@@ -3,6 +3,7 @@
 **/.terraform.lock.hcl
 **/.terraform.tfstate.lock.info
 **/terraform.tfstate
+**/terraform.tfstate.*
 
 # Crash log files
 crash.log
