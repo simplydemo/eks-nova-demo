@@ -57,3 +57,5 @@ sh destroy.sh
 ## Appendix
 
 - [examples](./docs/example.md)
+- [handson-docker](./docs/handson/docker-handson.md)
+- [handson-kubectl](./docs/handson/eks-kubectl-handson.md)

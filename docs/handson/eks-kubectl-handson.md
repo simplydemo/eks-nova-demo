@@ -1,4 +1,4 @@
-# kubectl
+# hands-on kubectl
 
 ## Deployment 컨트롤러
 
