@@ -96,20 +96,57 @@ ping 172.18.0.2
 docker network connect mybridge nettools
 
 
-
 ################################################################################
-### Docker Compose
+### Docker Volume Mount
 ################################################################################
-sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-docker-compose version
+mkdir -p /tmp/nginx
+
+cat <<EOF >/tmp/nginx/index.html
+<!DOCTYPE html>
+<html lang="en">
+<header>
+    <title>SymplyDemo</title>
+</header>
+<style>
+    body {
+        display: table-cell;
+        vertical-align: middle;
+        background-color: black;
+        text-align: center;
+    }
+
+    h1 {
+        color: white;
+    }
+</style>
+<body><h1>Hello, World!</h1></body>
+</html>
+
+EOF
+
+docker run -d --name nginx-mt -p 8088:80 -v /tmp/nginx:/usr/share/nginx/html:ro nginx:alpine3.18
 
 
+curl -X get http://localhost:8088
 
-# docker pull jonlabelle/network-tools
+# 볼륨을 생성하고 마운트합니다.
+docker volume create simplydemo
 
-# docker run --rm -it jonlabelle/network-tools
+# 생성된 볼륨을 확인 합니다.
+docker volume ls
 
+# host 파일파티션을 직접 마운트하지 않고, volume 을 마운트 합니다.
+docker run -d --name nginx-mt2 -p 8091:80 -v simplydemo:/usr/share/nginx/html:rw nginx:alpine3.18
+
+
+# 볼륨 경로를 확인 합니다.
+docker volume inspect simplydemo
+
+# simplydemo Mountpoint 경로로 이동하여 index.html 파일을 편집후에 확인해 봅시다.
+curl -X GET http://localhost:8091
+
+# 볼륨을 삭제 합니다.
+docker volume rm simplydemo
 
 
 ################################################################################
@@ -128,3 +165,20 @@ docker run --name busybox 'busybox:latest'
 # sleep을 걸고 터미널에 접속하여 확인합니다.
 docker run --rm --name busybox-bad 'busybox:latest' sleep 3600
 
+
+# nginx로 시작하는 이름의 container를 모두 중지/삭제 합니다.
+docker container ls --filter NAME=nginx -a | sed '1 d' | awk '{print $1}' | xargs -I {} docker stop {}
+docker container ls --filter NAME=nginx -a | sed '1 d' | awk '{print $1}' | xargs -I {} docker rm {}
+
+# 사용된 자원을 모두 제거합니다.
+docker container prune
+docker image prune
+docker volume prune
+
+
+################################################################################
+### Docker Compose
+################################################################################
+sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose version
