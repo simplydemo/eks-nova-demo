@@ -3,7 +3,7 @@
 # node-01
 module "amd64" {
   source                = "../modules/nodegroup/"
-  create                = true
+  create                = false
   eks_context           = module.eks.context
   name                  = "amd64"
   instance_types        = ["t3a.small"]
@@ -20,6 +20,9 @@ module "amd64" {
   iam_role_additional_policies = {
     AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     AmazonEBSCSIDriverPolicy     = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  }
+  labels = {
+    "node.role" = "backend"
   }
   /*
   taints = [
@@ -40,6 +43,7 @@ module "arm64" {
   eks_context                  = module.eks.context
   name                         = "arm64"
   instance_types               = ["t4g.small"]
+  desired_size                 = 3
   ami_id                       = data.aws_ami.arm64.image_id
   ami_type                     = "AL2_ARM_64"
   subnet_ids                   = data.aws_subnets.eksarapp.ids
@@ -78,7 +82,7 @@ module "arm64" {
 # node-03 - amd -- Managed
 module "amd64md" {
   source                       = "../modules/nodegroup/"
-  create                       = true
+  create                       = false
   eks_context                  = module.eks.context
   name                         = "amd64md"
   instance_types               = ["t3a.small"]
@@ -90,13 +94,16 @@ module "amd64md" {
     AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     AmazonEBSCSIDriverPolicy     = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   }
+  labels = {
+    "node.role" = "dataproc"
+  }
   depends_on = [module.eks]
 }
 
 # node-04 - arm Managed
 module "arm64md" {
   source                       = "../modules/nodegroup/"
-  create                       = true
+  create                       = false
   eks_context                  = module.eks.context
   name                         = "arm64md"
   instance_types               = ["t4g.small"]
@@ -107,6 +114,9 @@ module "arm64md" {
   iam_role_additional_policies = {
     AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     AmazonEBSCSIDriverPolicy     = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  }
+  labels = {
+    "node.role" = "dataproc"
   }
   depends_on = [module.eks]
 }
@@ -132,6 +142,9 @@ module "arm64br" {
   iam_role_additional_policies = {
     AmazonSsmManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     AmazonEBSCSIDriverPolicy     = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  }
+  labels = {
+    "node.role" = "backend"
   }
   depends_on = [module.eks]
 }

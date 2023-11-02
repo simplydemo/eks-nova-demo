@@ -59,5 +59,17 @@ sh destroy.sh
 - [examples](./docs/example.md)
 - [handson-docker](./docs/handson/docker-handson.md)
 - [handson-kubectl](./docs/handson/eks-kubectl-handson.md)
-- [handson-github-actions](./docs/handson/github-actions-handson.md)
+- [eks-helm-ingress](./docs/handson/eks-helm-ingress.md)
+- [github-actions](./docs/handson/github-actions-handson.md)
 - [github-actions-samples](https://github.com/simplydemo/hello-reactjs)
+
+
+## Guides
+- [welcome](./docs/guide/Session-01-welcome.pdf)
+- [handson-provisioning](./docs/guide/Session-02-handson-provisioning.pdf)
+- [docker-and-networks](./docs/guide/Session-03-docker-and-networks.pdf)
+- [introduce-kubernetes](./docs/guide/Session-04-introduce-kubernetes.pdf)
+- [amazon-eks-deep-dive](./docs/guide/Session-05-amazon-eks-deep-dive.pdf)
+
+
+

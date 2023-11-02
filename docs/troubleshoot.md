@@ -50,8 +50,6 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-05b9af020332f808d" | 
 aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-05b9af020332f808d" | jq '.Subnets[] | .SubnetId + "=" + "\(.AvailableIpAddressCount)"'
 ```
 
-
-
 ## EKS 인스턴스 타입을 지원하지 않는 가용영역이 있습니다.
 
 `t3a.small` 타입의 경우 `ap-northeast-2b` 에서 지원되지 않습니다.
